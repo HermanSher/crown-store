@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 import FormInput from "../form-input/form-input.component";
+import Button from "../button/button.component";
+
 
 import {
   signInWithGooglePopup,
@@ -10,7 +12,6 @@ import {
 
 import "./sign-in-form.styles.scss";
 
-import Button from "../button/button.component";
 
 const defaultFormField = {
   email: "",
@@ -21,6 +22,7 @@ const SignInForm = () => {
   const [formFields, setFormField] = useState(defaultFormField);
   const { email, password } = formFields;
 
+
   // console.log(formFields);
 
   const resetFormFields = () => {
@@ -28,22 +30,22 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
+    
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await signInAuthUserWithEmailAndPassword(
+      const { user } = await signInAuthUserWithEmailAndPassword(
         email,
         password
       );
       // console.log(response)
       resetFormFields();
     } catch (error) {
-      switch (error.code) {
+      switch (error.code) { 
         case "auth/wrong-password":
           alert("incorrect password for email");
           break;
@@ -93,7 +95,7 @@ const SignInForm = () => {
 
         <div className="buttons-container">
           <Button type="submit">Sign In</Button>
-          <Button type='button' buttonType="google" onClick={signInWithGoogle}>
+          <Button type="button" buttonType="google" onClick={signInWithGoogle}>
             Google sign in
           </Button>
         </div>
